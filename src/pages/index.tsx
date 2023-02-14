@@ -7,12 +7,8 @@ import { useInputState } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { IconAlertCircleFilled } from "@tabler/icons-react";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export default function Home() {
-  const [url, setURL] = useInputState(
-    "https://www.hksquash.org.hk/public/index.php/leagues/results_schedules/id/D00339/league/Squash/year/2022-2023/pages_id/25.html"
-  );
+  const [url, setURL] = useInputState("");
   const [teams, setTeams] = useState<SelectItem[]>([]);
   const [team, setTeam] = useState<string | null>(null);
   const [alert, setAlert] = useState<string | null>(null);
@@ -110,7 +106,7 @@ export default function Home() {
         </div>
       </main>
       {!!alert && (
-        <Transition mounted={!!alert} transition='slide-down' duration={1000} timingFunction="ease">
+        <Transition mounted={!!alert} transition="slide-down" duration={1000} timingFunction="ease">
           {(styles) => (
             <Alert
               icon={<IconAlertCircleFilled size={16} />}
