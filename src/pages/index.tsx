@@ -2,7 +2,18 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
-import { Alert, Button, Input, Select, SelectItem, Textarea, Transition } from "@mantine/core";
+import {
+  Alert,
+  Button,
+  Input,
+  LoadingOverlay,
+  Select,
+  SelectItem,
+  Textarea,
+  Transition,
+  Text,
+  Title,
+} from "@mantine/core";
 import { useInputState } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { IconAlertCircleFilled } from "@tabler/icons-react";
@@ -12,8 +23,10 @@ export default function Home() {
   const [teams, setTeams] = useState<SelectItem[]>([]);
   const [team, setTeam] = useState<string | null>(null);
   const [alert, setAlert] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   async function onNext() {
+    setLoading(true)
     const response = await fetch("/api/teams", {
       method: "POST",
       body: JSON.stringify({ url }),
@@ -25,6 +38,7 @@ export default function Home() {
     } else {
       setAlert(result.message);
     }
+    setLoading(false);
   }
 
   function gotTeams() {
@@ -40,6 +54,7 @@ export default function Home() {
   }, [alert]);
 
   async function onGenerate() {
+    setLoading(true)
     const response = await fetch("/api/schedule", {
       method: "POST",
       body: JSON.stringify({
@@ -56,7 +71,10 @@ export default function Home() {
       downloadBtn.href = icsFile;
       downloadBtn.download = "league_schedule.ics";
       downloadBtn.click();
+    } else {
+      setAlert('Failed to generate iCal file')
     }
+    setLoading(false);
   }
 
   return (
@@ -68,15 +86,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
+        <LoadingOverlay visible={loading} overlayBlur={2} overlayColor={"black"} />
         <div className={styles.center}>
+          <Title order={1} sx={{ margin: '20px'}}>League Schedule to iCalendar Generator</Title>
           <Textarea
-            placeholder="url of Schedule and Results of your division"
-            label="League Schedule to iCalendar Generator"
+            placeholder="URL of Schedule and Results of your division in Hong Kong Squash website"
+            label="URL"
             withAsterisk
             onChange={setURL}
             value={url}
             minRows={4}
-            sx={{ ["& .mantine-Textarea-label"]: { color: "white" }, width: "300px" }}
+            sx={{ ["& .mantine-Textarea-label"]: { color: "white" }, width: "250px" }}
           />
 
           {teams.length > 0 && (
@@ -87,7 +107,7 @@ export default function Home() {
               withAsterisk
               sx={{
                 ["& .mantine-Select-label"]: { color: "white" },
-                width: "300px",
+                width: "250px",
                 marginTop: "30px",
               }}
               onChange={setTeam}
