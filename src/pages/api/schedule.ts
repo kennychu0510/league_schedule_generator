@@ -17,7 +17,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
   }
 
   async function main() {
-    const iCalFile: ics.EventAttributes[] = [];
+    const iCalData: ics.EventAttributes[] = [];
 
     const { data } = await axios.get(url);
     const $ = cheerio.load(data);
@@ -39,15 +39,26 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
       const opponent = teamA.includes(team) ? teamB : teamA;
       const event: ics.EventAttributes = {
         title: `Squash League - ${div} - vs ${opponent}`,
-        start: [date[2], date[1], date[0], 19, 0],
+        start: [date[2], date[1], date[0], 19-8, 0],
         duration: { hours: 2 },
         location: venue || "",
+        startInputType: 'utc',
+        startOutputType: 'utc',
+        endInputType: 'utc',
+        endOutputType: 'utc'
       };
 
-      iCalFile.push(event);
+      // console.log(iCalData)
+
+      iCalData.push(event);
     }
 
-    ics.createEvents(iCalFile, (error, value) => {
+    // res.status(200).json({
+    //   message: "success",
+    //   schedule: iCalData,
+    // });
+
+    ics.createEvents(iCalData, (error, value) => {
       if (error) {
         console.log(error)
         res.status(500).json({

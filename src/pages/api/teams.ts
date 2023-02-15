@@ -29,11 +29,13 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
       for (let table of tables) {
         const time = $(table).find(".results-schedules-title").text().trim();
         const schedule = $(table).find(".results-schedules-content");
-        const teamA = $(schedule).children('div:contains("KCC")').children().first().text();
+        const team = $(schedule).children().eq(2).children().first().text()
+
+        // const teamA = $(schedule).children('div:contains("KCC")').children().first().text();
 
         // teams.push(teams);
         if (teams) {
-          teams.add(teamA);
+          teams.add(team);
         }
       }
       console.log(teams);

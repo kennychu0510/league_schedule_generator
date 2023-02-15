@@ -17,6 +17,7 @@ import {
 import { useInputState } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { IconAlertCircleFilled } from "@tabler/icons-react";
+import * as ics from "ics";
 
 export default function Home() {
   const [url, setURL] = useInputState("");
@@ -71,6 +72,7 @@ export default function Home() {
       downloadBtn.href = icsFile;
       downloadBtn.download = "league_schedule.ics";
       downloadBtn.click();
+      window.URL.revokeObjectURL(icsFile)
     } else {
       setAlert('Failed to generate iCal file')
     }
