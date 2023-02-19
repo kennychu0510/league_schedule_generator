@@ -30,12 +30,19 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
         const time = $(table).find(".results-schedules-title").text().trim();
         const schedule = $(table).find(".results-schedules-content");
         const team = $(schedule).children().eq(2).children().first().text()
-
+        const team2 = $(schedule).children().eq(3).children().first().text()
+        const team3 = $(schedule).children().eq(4).children().first().text()
         // const teamA = $(schedule).children('div:contains("KCC")').children().first().text();
 
         // teams.push(teams);
-        if (teams) {
+        if (team) {
           teams.add(team);
+        }
+        if (team2) {
+          teams.add(team2);
+        }
+        if (team3) {
+          teams.add(team3);
         }
       }
       console.log(teams);
