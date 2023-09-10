@@ -1,62 +1,24 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from "next";
-import axios from "axios";
-import * as cheerio from "cheerio";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import axios from 'axios';
+import * as cheerio from 'cheerio';
+import { getTeams } from '@/helpers/getTeams';
 
-type Data = {
-  message: string;
-  teams?: string[];
-};
-
-export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { url } = JSON.parse(req.body);
 
   if (!url) {
-    return res.status(404).json({ message: "no url is provided" });
+    return res.status(404).json({ message: 'no url is provided' });
   }
 
-  async function main() {
-    try {
-      const teams = new Set<string>();
-      const { data } = await axios.get(url);
-      if (!data) {
-        return res.status(404).json({
-          message: "invalid url",
-        });
-      }
-      const $ = cheerio.load(data);
-      const tables = $(".results-schedules-container");
-      for (let table of tables) {
-        const time = $(table).find(".results-schedules-title").text().trim();
-        const schedule = $(table).find(".results-schedules-content");
-        const team = $(schedule).children().eq(2).children().first().text()
-        const team2 = $(schedule).children().eq(3).children().first().text()
-        const team3 = $(schedule).children().eq(4).children().first().text()
-        // const teamA = $(schedule).children('div:contains("KCC")').children().first().text();
+  const { data } = await axios.get(url);
+  const result = await getTeams(data);
 
-        // teams.push(teams);
-        if (team) {
-          teams.add(team);
-        }
-        if (team2) {
-          teams.add(team2);
-        }
-        if (team3) {
-          teams.add(team3);
-        }
-      }
-      console.log(teams);
-      res.status(200).json({
-        message: "success",
-        teams: Array.from(teams.values()),
-      });
-    } catch (error) {
-      console.log("something went wrong");
-      res.status(404).json({
-        message: "Invalid URL",
-      });
-    }
+  if (result.status === 'failed') {
+    return res.status(404).json({
+      message: result.message,
+    });
+  } else {
+    return res.json(result);
   }
-
-  main();
 }

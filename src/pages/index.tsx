@@ -34,7 +34,7 @@ export default function Home() {
     });
 
     const result = await response.json();
-    if (result.message === "success") {
+    if (result.status === "success") {
       setTeams(result.teams);
     } else {
       setAlert(result.message);
