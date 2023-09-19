@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const { data } = await axios.get(url);
 
   async function main() {
-    const iCalFile = createIcalFile(data, team);
+    const iCalFile = createIcalFile(data, team, url);
 
     ics.createEvents(iCalFile, (error, value) => {
       if (error) {

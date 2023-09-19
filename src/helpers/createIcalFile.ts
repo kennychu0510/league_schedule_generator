@@ -1,7 +1,7 @@
 import * as ics from 'ics';
 import * as cheerio from 'cheerio';
 
-export default function createIcalFile(htmlFile: any, team: string): ics.EventAttributes[] {
+export default function createIcalFile(htmlFile: any, team: string, url?: string): ics.EventAttributes[] {
   const iCalFile: ics.EventAttributes[] = [];
 
   const $ = cheerio.load(htmlFile);
@@ -30,6 +30,7 @@ export default function createIcalFile(htmlFile: any, team: string): ics.EventAt
       startOutputType: 'utc',
       endInputType: 'utc',
       endOutputType: 'utc',
+      url: url
     };
 
     iCalFile.push(event);
