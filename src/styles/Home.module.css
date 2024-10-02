@@ -1,5 +1,4 @@
 .main {
-  display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
@@ -7,7 +6,6 @@
 
 .center {
   display: flex;
-  justify-content: center;
   align-items: center;
   position: relative;
   padding: 4rem 0;
