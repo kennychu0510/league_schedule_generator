@@ -91,7 +91,7 @@ export default function Home() {
         <LoadingOverlay visible={loading} overlayBlur={2} overlayColor={'black'} />
         <div className={styles.center}>
           <Title order={1} sx={{ margin: '20px' }}>
-            League Schedule to iCalendar Generator
+          2024-2025 Squash League Calendar Generator
           </Title>
           {!gotTeams() && (
             <div
