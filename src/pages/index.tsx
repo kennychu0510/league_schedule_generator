@@ -54,11 +54,12 @@ export default function Home() {
     const result = await response.json();
     if (result.message === 'success') {
       const { schedule } = result;
-      const data = new File([schedule], 'league_schedule.ics');
+      const fileName = `Squash_League_Schedule_Division_${selectedDivision}_${team}.ics`;
+      const data = new File([schedule], fileName);
       const icsFile = window.URL.createObjectURL(data);
       const downloadBtn = document.createElement('a');
       downloadBtn.href = icsFile;
-      downloadBtn.download = 'league_schedule.ics';
+      downloadBtn.download = fileName;
       downloadBtn.click();
       window.URL.revokeObjectURL(icsFile);
     } else {
