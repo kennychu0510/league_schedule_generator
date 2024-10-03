@@ -4,7 +4,10 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { getTeams } from '@/helpers/getTeams';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const { url } = JSON.parse(req.body);
 
   if (!url) {

@@ -1,6 +1,15 @@
 import Head from 'next/head';
 import styles from '@/styles/Home.module.css';
-import { Alert, Button, LoadingOverlay, Select, SelectItem, Transition, Title, Chip } from '@mantine/core';
+import {
+  Alert,
+  Button,
+  LoadingOverlay,
+  Select,
+  SelectItem,
+  Transition,
+  Title,
+  Chip,
+} from '@mantine/core';
 import { useInputState } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
 import { IconAlertCircleFilled } from '@tabler/icons-react';
@@ -68,9 +77,17 @@ export default function Home() {
     setLoading(false);
   }
 
-  function onSelectDivision({ url, division }: { url: string; division: string }) {
+  function onSelectDivision({
+    url,
+    division,
+  }: {
+    url: string;
+    division: string;
+  }) {
     setSelectedDivision(division);
-    setURL('https://www.hksquash.org.hk' + url.replace('detail', 'results_schedules'));
+    setURL(
+      'https://www.hksquash.org.hk' + url.replace('detail', 'results_schedules')
+    );
   }
 
   function onReset() {
@@ -83,15 +100,22 @@ export default function Home() {
     <>
       <Head>
         <title>2024-2025 Squash League Schedule Generator</title>
-        <meta name='description' content='League Schedule Generator' />
-        <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1' />
-        <link rel='icon' href='/favicon.ico' />
+        <meta name="description" content="League Schedule Generator" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
+        />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <LoadingOverlay visible={loading} overlayBlur={2} overlayColor={'black'} />
+        <LoadingOverlay
+          visible={loading}
+          overlayBlur={2}
+          overlayColor={'black'}
+        />
         <div className={styles.center}>
           <Title order={1} sx={{ margin: '20px' }}>
-          2024-2025 Squash League Calendar Generator
+            2024-2025 Squash League Calendar Generator
           </Title>
           {!gotTeams() && (
             <div
@@ -103,7 +127,12 @@ export default function Home() {
               }}
             >
               {divisions.map(({ division, url }) => (
-                <Chip key={division} variant='filled' checked={division == selectedDivision} onClick={() => onSelectDivision({ url, division })}>
+                <Chip
+                  key={division}
+                  variant="filled"
+                  checked={division == selectedDivision}
+                  onClick={() => onSelectDivision({ url, division })}
+                >
                   {division}
                 </Chip>
               ))}
@@ -112,8 +141,8 @@ export default function Home() {
 
           {gotTeams() && (
             <Select
-              label='Team'
-              placeholder='Pick one'
+              label="Team"
+              placeholder="Pick one"
               data={teams}
               withAsterisk
               sx={{
@@ -124,28 +153,44 @@ export default function Home() {
               onChange={setTeam}
             />
           )}
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            width: gotTeams() ? '250px' : undefined,
-            marginTop: '30px',
-          }}>
-            {gotTeams() && 
-            <Button variant='default' onClick={onReset}>
-              Back
-            </Button>
-            }
-            <Button variant='gradient' gradient={{ from: 'indigo', to: 'cyan' }}  disabled={gotTeams() && !team} onClick={gotTeams() ? onGenerate : onNext}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: gotTeams() ? '250px' : undefined,
+              marginTop: '30px',
+            }}
+          >
+            {gotTeams() && (
+              <Button variant="default" onClick={onReset}>
+                Back
+              </Button>
+            )}
+            <Button
+              variant="gradient"
+              gradient={{ from: 'indigo', to: 'cyan' }}
+              disabled={gotTeams() && !team}
+              onClick={gotTeams() ? onGenerate : onNext}
+            >
               {gotTeams() ? 'Generate' : 'Next'}
             </Button>
-
           </div>
         </div>
       </main>
       {!!alert && (
-        <Transition mounted={!!alert} transition='slide-down' duration={1000} timingFunction='ease'>
+        <Transition
+          mounted={!!alert}
+          transition="slide-down"
+          duration={1000}
+          timingFunction="ease"
+        >
           {(styles) => (
-            <Alert icon={<IconAlertCircleFilled size={16} />} title='Error!' color='red' sx={{ position: 'absolute', right: 20, left: 20, top: 20 }}>
+            <Alert
+              icon={<IconAlertCircleFilled size={16} />}
+              title="Error!"
+              color="red"
+              sx={{ position: 'absolute', right: 20, left: 20, top: 20 }}
+            >
               {alert}
             </Alert>
           )}
