@@ -22,8 +22,16 @@ export async function getTeams(htmlFile: any): Promise<Data> {
     for (let table of tables) {
       const time = $(table).find('.results-schedules-title').text().trim();
       const schedule = $(table).find('.results-schedules-content');
-      const teamA = $(schedule).children(':not(:first-child)').children('div:nth-child(1)').first().text();
-      const teamB = $(schedule).children(':not(:first-child)').children('div:nth-child(3)').first().text();
+      const teamA = $(schedule)
+        .children(':not(:first-child)')
+        .children('div:nth-child(1)')
+        .first()
+        .text();
+      const teamB = $(schedule)
+        .children(':not(:first-child)')
+        .children('div:nth-child(3)')
+        .first()
+        .text();
 
       teams.add(teamA);
       teams.add(teamB);

@@ -10,7 +10,10 @@ type Data = {
   schedule?: any;
 };
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<Data>
+) {
   const { url, team } = JSON.parse(req.body);
 
   if (!url) {

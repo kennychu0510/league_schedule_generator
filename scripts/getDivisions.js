@@ -17,4 +17,7 @@ for (let division of divisions) {
   divisionData.push({ division: divisionName, url });
 }
 
-fs.writeFileSync(path.join(__dirname, 'output', 'divisions.json'), JSON.stringify(divisionData, null, 2));
+fs.writeFileSync(
+  path.join(__dirname, 'output', 'divisions.json'),
+  JSON.stringify(divisionData, null, 2)
+);
