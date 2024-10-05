@@ -186,6 +186,7 @@ export default function Home() {
               gradient={{ from: 'indigo', to: 'cyan' }}
               disabled={gotTeams() && !team}
               onClick={gotTeams() ? onGenerate : onNext}
+              sx={{ marginBottom: '40px' }}
             >
               {gotTeams() ? 'Generate' : 'Next'}
             </Button>
