@@ -132,6 +132,7 @@ export default function Home() {
           visible={loading}
           overlayBlur={2}
           overlayColor={'black'}
+          h={'100dvh'}
         />
         <div
           className={styles.center}
