@@ -233,7 +233,11 @@ function LeagueSelectDisplay({
 }) {
   return (
     <>
-      <Title color="#1c7ed6" size={'h2'}>
+      <Title
+        color="#1c7ed6"
+        size={'h2'}
+        sx={{ marginRight: 'auto', marginLeft: '20px' }}
+      >
         {title}
       </Title>
       <div
@@ -243,7 +247,7 @@ function LeagueSelectDisplay({
           margin: '10px 20px',
           flexWrap: 'wrap',
           alignSelf: 'flex-start',
-          marginBottom: '30px',
+          marginBottom: '40px',
         }}
       >
         {divisions.map(({ division, url }) => (
