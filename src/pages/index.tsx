@@ -9,11 +9,30 @@ import {
   Transition,
   Title,
   Chip,
+  Tabs,
 } from '@mantine/core';
 import { useInputState } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
 import { IconAlertCircleFilled } from '@tabler/icons-react';
-import divisions from '../assets/divisions.json';
+import { Analytics } from '@vercel/analytics/react';
+import mainDivisions from '../assets/divisions-main.json';
+import masterDivisions from '../assets/divisions-master.json';
+import ladiesDivisions from '../assets/divisions-ladies.json';
+
+const divisions = [
+  {
+    title: 'Main',
+    divisions: mainDivisions,
+  },
+  {
+    title: 'Master',
+    divisions: masterDivisions,
+  },
+  {
+    title: 'Ladies',
+    divisions: ladiesDivisions,
+  },
+];
 
 export default function Home() {
   const [url, setURL] = useInputState('');
@@ -84,7 +103,7 @@ export default function Home() {
     url: string;
     division: string;
   }) {
-    setSelectedDivision(division);
+    setSelectedDivision(url);
     setURL(
       'https://www.hksquash.org.hk' + url.replace('detail', 'results_schedules')
     );
@@ -98,6 +117,7 @@ export default function Home() {
 
   return (
     <>
+      <Analytics />
       <Head>
         <title>2024-2025 Squash League Schedule Generator</title>
         <meta name="description" content="League Schedule Generator" />
@@ -113,31 +133,26 @@ export default function Home() {
           overlayBlur={2}
           overlayColor={'black'}
         />
-        <div className={styles.center}>
+        <div
+          className={styles.center}
+          style={{
+            maxWidth: '500px',
+            margin: '0 auto',
+          }}
+        >
           <Title order={1} sx={{ margin: '20px' }}>
             2024-2025 Squash League Calendar Generator
           </Title>
-          {!gotTeams() && (
-            <div
-              style={{
-                display: 'flex',
-                gap: '10px',
-                margin: '10px 20px',
-                flexWrap: 'wrap',
-              }}
-            >
-              {divisions.map(({ division, url }) => (
-                <Chip
-                  key={division}
-                  variant="filled"
-                  checked={division == selectedDivision}
-                  onClick={() => onSelectDivision({ url, division })}
-                >
-                  {division}
-                </Chip>
-              ))}
-            </div>
-          )}
+          {!gotTeams() &&
+            divisions.map(({ title, divisions }) => (
+              <LeagueSelectDisplay
+                key={title}
+                title={title}
+                divisions={divisions}
+                selectedDivision={selectedDivision}
+                onSelectDivision={onSelectDivision}
+              />
+            ))}
 
           {gotTeams() && (
             <Select
@@ -196,6 +211,52 @@ export default function Home() {
           )}
         </Transition>
       )}
+    </>
+  );
+}
+function LeagueSelectDisplay({
+  title,
+  divisions,
+  selectedDivision,
+  onSelectDivision,
+}: {
+  title: string;
+  divisions: { division: string; url: string }[];
+  selectedDivision: string;
+  onSelectDivision: ({
+    url,
+    division,
+  }: {
+    url: string;
+    division: string;
+  }) => void;
+}) {
+  return (
+    <>
+      <Title color="#1c7ed6" size={'h2'}>
+        {title}
+      </Title>
+      <div
+        style={{
+          display: 'flex',
+          gap: '10px',
+          margin: '10px 20px',
+          flexWrap: 'wrap',
+          alignSelf: 'flex-start',
+          marginBottom: '30px',
+        }}
+      >
+        {divisions.map(({ division, url }) => (
+          <Chip
+            key={division}
+            variant="filled"
+            checked={url == selectedDivision}
+            onClick={() => onSelectDivision({ url, division })}
+          >
+            {division}
+          </Chip>
+        ))}
+      </div>
     </>
   );
 }
