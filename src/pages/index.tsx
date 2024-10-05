@@ -97,13 +97,15 @@ export default function Home() {
   }
 
   function onSelectDivision({
+    type,
     url,
     division,
   }: {
+    type: string;
     url: string;
     division: string;
   }) {
-    setSelectedDivision(url);
+    setSelectedDivision(`${type}_${division}`);
     setURL(
       'https://www.hksquash.org.hk' + url.replace('detail', 'results_schedules')
     );
@@ -227,13 +229,16 @@ function LeagueSelectDisplay({
   divisions: { division: string; url: string }[];
   selectedDivision: string;
   onSelectDivision: ({
+    type,
     url,
     division,
   }: {
+    type: string;
     url: string;
     division: string;
   }) => void;
 }) {
+  const type = title.toLowerCase();
   return (
     <>
       <Title
@@ -257,8 +262,8 @@ function LeagueSelectDisplay({
           <Chip
             key={division}
             variant="filled"
-            checked={url == selectedDivision}
-            onClick={() => onSelectDivision({ url, division })}
+            checked={`${type}_${division}` == selectedDivision}
+            onClick={() => onSelectDivision({ type, url, division })}
           >
             {division}
           </Chip>
