@@ -133,6 +133,7 @@ export default function Home() {
           overlayBlur={2}
           overlayColor={'black'}
           h={'100dvh'}
+          pos={'fixed'}
         />
         <div
           className={styles.center}
