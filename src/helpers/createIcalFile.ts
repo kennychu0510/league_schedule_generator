@@ -8,38 +8,29 @@ export default function createIcalFile(
 ): ics.EventAttributes[] {
   const iCalFile: ics.EventAttributes[] = [];
 
-  const $ = cheerio.load(htmlFile);
+  let $ = cheerio.load(htmlFile);
   const tables = $('.results-schedules-container');
   const divContainer = $('.teams-section-container').children().first();
   const div = $(divContainer).find('a').text().trim();
   for (let table of tables) {
     const time = $(table).find('.results-schedules-title').text().trim();
     const schedule = $(table).find('.results-schedules-content');
-    const teamA = $(schedule)
-      .children(`div:contains(${team})`)
-      .children()
-      .first()
-      .text();
-    const teamB = $(schedule)
-      .children(`div:contains(${team})`)
-      .children()
-      .eq(2)
-      .text();
-    const venue = $(schedule)
-      .children(`div:contains(${team})`)
-      .children()
-      .eq(3)
-      .text();
+    const matchRows = $(schedule).find('.results-schedules-list');
+    const { teamA, teamB, venue } = getBothTeams(matchRows, team);
     const week = time.slice(0, time.indexOf('-') - 1);
     const date = time
       .slice(time.indexOf('-') + 2)
       .split('/')
       .map((item) => Number(item));
 
-    const isHome = teamA.includes(team);
-    const isBye = teamB.includes('BYE');
+    const isHome = teamA.toLocaleLowerCase().includes(team.toLocaleLowerCase());
+    const isBye = teamB.toLocaleLowerCase().includes('BYE'.toLocaleLowerCase());
 
-    const opponent = teamA.includes(team) ? teamB : teamA;
+    const opponent = teamA
+      .toLocaleLowerCase()
+      .includes(team.toLocaleLowerCase())
+      ? teamB
+      : teamA;
     const title = isBye
       ? `Squash League - ${div} - BYE`
       : `Squash League - ${div} - vs ${opponent} (${isHome ? 'HOME' : 'AWAY'})`;
@@ -58,4 +49,24 @@ export default function createIcalFile(
     iCalFile.push(event);
   }
   return iCalFile;
+}
+
+function getBothTeams(
+  matchRows: cheerio.Cheerio,
+  selectedTeam: string
+): { teamA: string; teamB: string; venue: string } {
+  const [header, ...rest] = matchRows;
+  for (let matchRow of rest) {
+    const $ = cheerio.load(matchRow);
+    const teamA = $(matchRow).children('.col-xs-2').first().text();
+    const teamB = $(matchRow).children('.col-xs-3').first().text();
+    const venue = $(matchRow).children('.col-xs-3').eq(1).text().trim();
+    if (
+      teamA.toLocaleLowerCase() === selectedTeam.toLocaleLowerCase() ||
+      teamB.toLocaleLowerCase() === selectedTeam.toLocaleLowerCase()
+    ) {
+      return { teamA, teamB, venue };
+    }
+  }
+  return { teamA: '', teamB: '', venue: '' };
 }

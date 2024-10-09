@@ -22,19 +22,15 @@ export async function getTeams(htmlFile: any): Promise<Data> {
     for (let table of tables) {
       const time = $(table).find('.results-schedules-title').text().trim();
       const schedule = $(table).find('.results-schedules-content');
-      const teamA = $(schedule)
-        .children(':not(:first-child)')
-        .children('div:nth-child(1)')
-        .first()
-        .text();
-      const teamB = $(schedule)
-        .children(':not(:first-child)')
-        .children('div:nth-child(3)')
-        .first()
-        .text();
-
-      teams.add(teamA);
-      teams.add(teamB);
+      const matchRows = $(schedule).find('.results-schedules-list');
+      // trim the first row from matchRows
+      const [header, ...rest] = matchRows;
+      for (let matchRow of rest) {
+        const teamA = $(matchRow).children('.col-xs-2').first().text();
+        const teamB = $(matchRow).children('.col-xs-3').first().text();
+        teams.add(teamA);
+        teams.add(teamB);
+      }
     }
     if (teams.size === 0) {
       return {
@@ -42,6 +38,7 @@ export async function getTeams(htmlFile: any): Promise<Data> {
         message: 'No Teams Found',
       };
     }
+    teams.delete('[BYE]');
     return {
       status: 'success',
       message: 'success',

@@ -36,13 +36,14 @@ const divisions = [
 
 export default function Home() {
   const [url, setURL] = useInputState('');
-  const [teams, setTeams] = useState<SelectItem[]>([]);
+  const [teams, setTeams] = useState<string[]>([]);
   const [team, setTeam] = useState<string | null>(null);
   const [alert, setAlert] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [selectedDivision, setSelectedDivision] = useState('');
 
   async function onNext() {
+    console.log(`generating teams from ${url}`);
     setLoading(true);
     const response = await fetch('/api/teams', {
       method: 'POST',
@@ -51,7 +52,10 @@ export default function Home() {
 
     const result = await response.json();
     if (result.status === 'success') {
-      setTeams(result.teams);
+      console.log(`retrieved teams: ${result.teams}`);
+      const teams = result.teams as string[];
+      const sortedTeams = teams.toSorted((a, b) => a.localeCompare(b));
+      setTeams(sortedTeams);
     } else {
       setAlert(result.message);
     }
