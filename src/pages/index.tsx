@@ -5,11 +5,9 @@ import {
   Button,
   LoadingOverlay,
   Select,
-  SelectItem,
   Transition,
   Title,
   Chip,
-  Tabs,
 } from '@mantine/core';
 import { useInputState } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
@@ -54,7 +52,7 @@ export default function Home() {
     if (result.status === 'success') {
       console.log(`retrieved teams: ${result.teams}`);
       const teams = result.teams as string[];
-      const sortedTeams = teams.toSorted((a, b) => a.localeCompare(b));
+      const sortedTeams = [...teams].sort((a, b) => a.localeCompare(b));
       setTeams(sortedTeams);
     } else {
       setAlert(result.message);
