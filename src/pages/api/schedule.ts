@@ -8,6 +8,7 @@ import createIcalFile from '@/helpers/createIcalFile';
 type Data = {
   message: string;
   schedule?: any;
+  events?: any;
 };
 
 export default async function handler(
@@ -36,6 +37,7 @@ export default async function handler(
       res.status(200).json({
         message: 'success',
         schedule: value,
+        events: iCalFile,
       });
     });
   }
