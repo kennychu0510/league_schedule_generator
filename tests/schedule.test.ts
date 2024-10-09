@@ -1,5 +1,6 @@
 import createIcalFile from '@/helpers/createIcalFile';
 import fs from 'fs';
+import { EventAttributes } from 'ics';
 import { expect, test } from 'vitest';
 
 test('create iCal File works properly', () => {
@@ -31,3 +32,127 @@ test('Bye correctly handled', () => {
   const schedule = createIcalFile(data, 'KCC 1');
   expect(schedule[1].title).toContain('BYE');
 });
+
+test.only('Ladies D2 2024-2025 is correct', () => {
+  const data = fs.readFileSync('./tests/sample3.html', { encoding: 'utf-8' });
+  const division = 'L2';
+  const schedule = createIcalFile(data, 'Jessica L2');
+  verifyEvent({
+    awayTeam: 'Kowloon Cricket Club L2',
+    division,
+    venue: 'HK Squash Centre',
+    date: '08/10/2024',
+    event: schedule[0],
+    isHome: true,
+  });
+  verifyEvent({
+    awayTeam: 'Hong Kong Football Club L2B',
+    division,
+    venue: 'HK Squash Centre',
+    date: '15/10/2024',
+    event: schedule[1],
+    isHome: true,
+  });
+  verifyEvent({
+    awayTeam: 'Hong Kong Cricket Club L2',
+    division,
+    venue: 'Hong Kong Cricket Club',
+    date: '22/10/2024',
+    event: schedule[2],
+    isHome: false,
+  });
+  verifyEvent({
+    awayTeam: 'Hong Kong Football Club L2C',
+    division,
+    venue: 'HK Squash Centre',
+    date: '29/10/2024',
+    event: schedule[3],
+    isHome: true,
+  });
+  verifyEvent({
+    awayTeam: 'Hong Kong Football Club L2A',
+    division,
+    venue: 'Hong Kong Football Club',
+    date: '05/11/2024',
+    event: schedule[4],
+    isHome: false,
+  });
+  verifyEvent({
+    awayTeam: 'Kowloon Cricket Club L2',
+    division,
+    venue: 'Kowloon Cricket Club',
+    date: '12/11/2024',
+    event: schedule[5],
+    isHome: false,
+  });
+  verifyEvent({
+    awayTeam: 'Hong Kong Football Club L2B',
+    division,
+    venue: 'Hong Kong Football Club',
+    date: '19/11/2024',
+    event: schedule[6],
+    isHome: false,
+  });
+  verifyEvent({
+    awayTeam: 'Hong Kong Cricket Club L2',
+    division,
+    venue: 'HK Squash Centre',
+    date: '26/11/2024',
+    event: schedule[7],
+    isHome: true,
+  });
+  verifyEvent({
+    awayTeam: 'Hong Kong Football Club L2A',
+    division,
+    venue: 'HK Squash Centre',
+    date: '25/03/2025',
+    event: schedule[19],
+    isHome: true,
+  });
+});
+
+test.only('Main D3 2024-2025 is correct', () => {
+  const data = fs.readFileSync('./tests/sample4.html', { encoding: 'utf-8' });
+  const division = '3';
+  const schedule = createIcalFile(data, 'Kowloon Cricket Club 3B');
+  verifyEvent({
+    awayTeam: 'Young Player 3',
+    division,
+    venue: 'HK Squash Centre',
+    date: '22/10/2024',
+    event: schedule[2],
+    isHome: false,
+  });
+  verifyEvent({
+    awayTeam: 'BYE',
+    division,
+    venue: '',
+    date: '29/10/2024',
+    event: schedule[3],
+    isHome: null,
+  });
+});
+
+function verifyEvent({
+  awayTeam,
+  venue,
+  date,
+  event,
+  division,
+  isHome,
+}: {
+  division: string;
+  awayTeam: string;
+  venue: string;
+  date: string;
+  event: EventAttributes;
+  isHome: boolean | null;
+}) {
+  const suffix =
+    isHome !== null ? `vs ${awayTeam} (${isHome ? 'HOME' : 'AWAY'})` : 'BYE';
+  expect(event.title).toBe(`Squash League - Division ${division} - ${suffix}`);
+  expect(event.location).toBe(venue);
+  const dateSplit = date.split('/');
+  const [day, month, year] = dateSplit.map((item) => Number(item));
+  expect(event.start).toEqual([year, month, day, 11, 0]);
+}
