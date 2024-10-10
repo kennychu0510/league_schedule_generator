@@ -218,7 +218,7 @@ export default function Home() {
               {generatedSchedule?.events.map(
                 (item: EventAttributes, index: number) => {
                   const [year, month, day] = item.start;
-                  const opponent = item.title?.split('vs')[1].trim();
+                  const opponent = item.title?.split('vs')[1]?.trim() ?? 'BYE';
                   return (
                     <div
                       style={{ marginBottom: '20px' }}
