@@ -8,6 +8,7 @@ import {
   Transition,
   Title,
   Chip,
+  Text,
 } from '@mantine/core';
 import { useInputState } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
@@ -16,6 +17,7 @@ import { Analytics } from '@vercel/analytics/react';
 import mainDivisions from '../assets/divisions-main.json';
 import masterDivisions from '../assets/divisions-master.json';
 import ladiesDivisions from '../assets/divisions-ladies.json';
+import { EventAttributes } from 'ics';
 
 const divisions = [
   {
@@ -39,6 +41,13 @@ export default function Home() {
   const [alert, setAlert] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [selectedDivision, setSelectedDivision] = useState('');
+  const [generatedSchedule, setGeneratedSchedule] = useState<any>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  function onSelectTeam(value: string | null) {
+    setTeam(value);
+    setGeneratedSchedule(null);
+  }
 
   async function onNext() {
     console.log(`generating teams from ${url}`);
@@ -83,19 +92,42 @@ export default function Home() {
     });
     const result = await response.json();
     if (result.message === 'success') {
-      const { schedule } = result;
+      setGeneratedSchedule(result);
+      // const { schedule } = result;
+      // const fileName = `Squash_League_Schedule_Division_${selectedDivision}_${team}.ics`;
+      // const data = new File([schedule], fileName);
+      // const icsFile = window.URL.createObjectURL(data);
+      // const downloadBtn = document.createElement('a');
+      // downloadBtn.href = icsFile;
+      // downloadBtn.download = fileName;
+      // downloadBtn.click();
+      // window.URL.revokeObjectURL(icsFile);
+    } else {
+      setAlert('Failed to generate schedule');
+    }
+    setLoading(false);
+  }
+
+  function downloadSchedule() {
+    if (!generatedSchedule) {
+      setAlert('Failed to download schedule');
+      return;
+    }
+    try {
+      setIsDownloading(true);
       const fileName = `Squash_League_Schedule_Division_${selectedDivision}_${team}.ics`;
-      const data = new File([schedule], fileName);
+      const data = new File([generatedSchedule.schedule], fileName);
       const icsFile = window.URL.createObjectURL(data);
       const downloadBtn = document.createElement('a');
       downloadBtn.href = icsFile;
       downloadBtn.download = fileName;
       downloadBtn.click();
       window.URL.revokeObjectURL(icsFile);
-    } else {
-      setAlert('Failed to generate iCal file');
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsDownloading(false);
     }
-    setLoading(false);
   }
 
   function onSelectDivision({
@@ -117,6 +149,8 @@ export default function Home() {
     setTeams([]);
     setURL('');
     setSelectedDivision('');
+    setGeneratedSchedule(null);
+    setTeam(null);
   }
 
   return (
@@ -171,15 +205,43 @@ export default function Home() {
                 width: '250px',
                 marginTop: '30px',
               }}
-              onChange={setTeam}
+              onChange={onSelectTeam}
             />
           )}
+
+          {generatedSchedule != null && (
+            <div
+              style={{
+                marginTop: '20px',
+              }}
+            >
+              {generatedSchedule?.events.map(
+                (item: EventAttributes, index: number) => {
+                  const [year, month, day] = item.start;
+                  const opponent = item.title?.split('vs')[1]?.trim() ?? 'BYE';
+                  return (
+                    <div
+                      style={{ marginBottom: '20px' }}
+                      key={item.start.toString()}
+                    >
+                      <Text>
+                        {`Week ${index + 1}`} - {`${day}/${month}/${year}`}
+                      </Text>
+                      <Text size={'md'} fw={700}>{`${opponent}`}</Text>
+                      <Text td="underline">{item.location}</Text>
+                    </div>
+                  );
+                }
+              )}
+            </div>
+          )}
+
           <div
             style={{
               display: 'flex',
               justifyContent: 'space-between',
               width: gotTeams() ? '250px' : undefined,
-              marginTop: '30px',
+              padding: '30px 0',
             }}
           >
             {gotTeams() && (
@@ -187,15 +249,26 @@ export default function Home() {
                 Back
               </Button>
             )}
-            <Button
-              variant="gradient"
-              gradient={{ from: 'indigo', to: 'cyan' }}
-              disabled={gotTeams() && !team}
-              onClick={gotTeams() ? onGenerate : onNext}
-              sx={{ marginBottom: '40px' }}
-            >
-              {gotTeams() ? 'Generate' : 'Next'}
-            </Button>
+            {generatedSchedule != null ? (
+              <Button
+                variant="gradient"
+                gradient={{ from: 'indigo', to: 'cyan' }}
+                loading={isDownloading}
+                onClick={downloadSchedule}
+              >
+                Download
+              </Button>
+            ) : (
+              <Button
+                variant="gradient"
+                gradient={{ from: 'indigo', to: 'cyan' }}
+                disabled={gotTeams() && !team}
+                onClick={gotTeams() ? onGenerate : onNext}
+                sx={{ marginBottom: '40px' }}
+              >
+                {gotTeams() ? 'Generate' : 'Next'}
+              </Button>
+            )}
           </div>
         </div>
       </main>
