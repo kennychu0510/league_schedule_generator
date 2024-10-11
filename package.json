@@ -8,7 +8,7 @@
     "start": "next start",
     "format": "npx prettier src/**/*.{ts,tsx} --write && eslint . --fix ",
     "prepare": "husky",
-    "test": "npx vitest run"
+    "test": "npx vitest run --dir ./tests/unit-test"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -28,11 +28,13 @@
     "eslint-config-next": "13.1.6",
     "ics": "^3.0.1",
     "next": "13.1.6",
+    "node-ical": "^0.19.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tabler-icons-react": "^1.56.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.48.0",
     "@types/cheerio": "^0.22.31",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",

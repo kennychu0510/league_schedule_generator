@@ -214,6 +214,7 @@ export default function Home() {
               style={{
                 marginTop: '20px',
               }}
+              data-testid="generated-schedule"
             >
               {generatedSchedule?.events.map(
                 (item: EventAttributes, index: number) => {
@@ -339,6 +340,7 @@ function LeagueSelectDisplay({
             variant="filled"
             checked={`${type}_${division}` == selectedDivision}
             onClick={() => onSelectDivision({ type, url, division })}
+            wrapperProps={{ 'data-testid': `${title}-${division}-chip` }}
           >
             {division}
           </Chip>

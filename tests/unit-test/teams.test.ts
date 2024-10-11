@@ -3,7 +3,9 @@ import fs from 'fs';
 import { expect, test } from 'vitest';
 
 test('get teams working properly', async () => {
-  const data = fs.readFileSync('./tests/sample1.html', { encoding: 'utf-8' });
+  const data = fs.readFileSync('./tests/unit-test/sample1.html', {
+    encoding: 'utf-8',
+  });
   const { teams } = await getTeams(data);
   console.log(teams);
   expect(teams?.length).toBe(7);
@@ -24,14 +26,18 @@ test('get teams working properly', async () => {
 });
 
 test('get teams working properly 2', async () => {
-  const data = fs.readFileSync('./tests/sample2.html', { encoding: 'utf-8' });
+  const data = fs.readFileSync('./tests/unit-test/sample2.html', {
+    encoding: 'utf-8',
+  });
 
   expect((await getTeams(data)).teams?.length).toBe(12);
   expect((await getTeams(data)).teams).toBeDefined();
 });
 
 test('get teams from ladies division 2024-2025', async () => {
-  const data = fs.readFileSync('./tests/sample3.html', { encoding: 'utf-8' });
+  const data = fs.readFileSync('./tests/unit-test/sample3.html', {
+    encoding: 'utf-8',
+  });
 
   const { teams } = await getTeams(data);
 

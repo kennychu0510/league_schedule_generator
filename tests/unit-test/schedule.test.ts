@@ -4,7 +4,9 @@ import { EventAttributes } from 'ics';
 import { expect, test } from 'vitest';
 
 test('create iCal File works properly', () => {
-  const data = fs.readFileSync('./tests/sample1.html', { encoding: 'utf-8' });
+  const data = fs.readFileSync('./tests/unit-test/sample1.html', {
+    encoding: 'utf-8',
+  });
   const schedule = createIcalFile(data, 'KCC 1');
   expect(schedule.length).toBe(14);
   expect(schedule[0].title).toMatch(/i-mask advance squash club 1/i);
@@ -13,7 +15,9 @@ test('create iCal File works properly', () => {
 });
 
 test('create iCal File works properly 2', () => {
-  const data = fs.readFileSync('./tests/sample2.html', { encoding: 'utf-8' });
+  const data = fs.readFileSync('./tests/unit-test/sample2.html', {
+    encoding: 'utf-8',
+  });
   const schedule = createIcalFile(data, 'Bruh');
   expect(schedule.length).toBe(11);
   expect(schedule[0].title).toMatch(/FRIEND CLUB 1/i);
@@ -21,20 +25,26 @@ test('create iCal File works properly 2', () => {
 });
 
 test('Test Home and Away is correctly handled', () => {
-  const data = fs.readFileSync('./tests/sample2.html', { encoding: 'utf-8' });
+  const data = fs.readFileSync('./tests/unit-test/sample2.html', {
+    encoding: 'utf-8',
+  });
   const schedule = createIcalFile(data, 'TNGX');
   expect(schedule[3].title).toContain('(AWAY)');
   expect(schedule[4].title).toContain('(HOME)');
 });
 
 test('Bye correctly handled', () => {
-  const data = fs.readFileSync('./tests/sample1.html', { encoding: 'utf-8' });
+  const data = fs.readFileSync('./tests/unit-test/sample1.html', {
+    encoding: 'utf-8',
+  });
   const schedule = createIcalFile(data, 'KCC 1');
   expect(schedule[1].title).toContain('BYE');
 });
 
 test.only('Ladies D2 2024-2025 is correct', () => {
-  const data = fs.readFileSync('./tests/sample3.html', { encoding: 'utf-8' });
+  const data = fs.readFileSync('./tests/unit-test/sample3.html', {
+    encoding: 'utf-8',
+  });
   const division = 'L2';
   const schedule = createIcalFile(data, 'Jessica L2');
   verifyEvent({
@@ -112,7 +122,9 @@ test.only('Ladies D2 2024-2025 is correct', () => {
 });
 
 test.only('Main D3 2024-2025 is correct', () => {
-  const data = fs.readFileSync('./tests/sample4.html', { encoding: 'utf-8' });
+  const data = fs.readFileSync('./tests/unit-test/sample4.html', {
+    encoding: 'utf-8',
+  });
   const division = '3';
   const schedule = createIcalFile(data, 'Kowloon Cricket Club 3B');
   verifyEvent({
