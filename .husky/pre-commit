@@ -1,3 +1,0 @@
-npm.cmd run format
-npm.cmd test
-npm.cmd run build
