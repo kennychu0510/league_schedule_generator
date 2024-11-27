@@ -1,9 +1,8 @@
-import mainDivisions from './assets/divisions-main.json';
-import masterDivisions from './assets/divisions-master.json';
-import ladiesDivisions from './assets/divisions-ladies.json';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import DivisionBadge from './components/DivisionBadge';
+import mainDivisions from '../assets/divisions-main.json';
+import masterDivisions from '../assets/divisions-master.json';
+import ladiesDivisions from '../assets/divisions-ladies.json';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import DivisionBadge from './my-components/DivisionBadge';
 
 const divisions = [
   {
@@ -24,10 +23,10 @@ export default function Home() {
   return (
     <div>
       <section>
-        <h1 className='text-center text-2xl py-2 shadow-md font-bold'>Squash League Schedule Generator</h1>
+        <h1 className='mx-2 text-2xl py-2 font-bold'>Squash League Schedule Generator 2024</h1>
       </section>
-      <main>
-        <p className='p-2'>Generate an ICS file and import to your phone!</p>
+      <main className='pb-2'>
+        <p className='p-2 text-muted-foreground'>Generate an ICS file and import to your phone!</p>
         {divisions.map((division) => (
           <Card className='mx-2 mb-2' key={division.title}>
             <CardHeader>

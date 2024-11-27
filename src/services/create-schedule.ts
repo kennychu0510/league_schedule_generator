@@ -1,6 +1,13 @@
+'use server';
 import * as ics from 'ics';
 import * as cheerio from 'cheerio';
 import axios from 'axios';
+import { ServerActionResponse } from './interface';
+
+type Response = {
+  file: ics.EventAttributes[];
+  schedule: string;
+};
 
 function createICalFileData(htmlFile: any, team: string, url?: string): ics.EventAttributes[] {
   const iCalFile: ics.EventAttributes[] = [];
@@ -56,19 +63,31 @@ function getBothTeams(matchRows: any, selectedTeam: string): { teamA: string; te
   return { teamA: '', teamB: '', venue: '' };
 }
 
-export default async function createSchedule(url: string, team: string) {
+export default async function createSchedule(url: string, team: string): Promise<ServerActionResponse<Response | null>> {
   const { data } = await axios.get(url);
   if (!data) {
     return {
       status: 'failed',
       message: 'invalid url',
+      data: null,
     };
   }
   const iCalFileData = createICalFileData(data, team, url);
 
   const iCalFile = ics.createEvents(iCalFileData);
+  if (iCalFile.value) {
+    return {
+      status: 'success',
+      message: 'created ICS file successfully',
+      data: {
+        schedule: iCalFile.value,
+        file: iCalFileData,
+      },
+    };
+  }
   return {
-    file: iCalFileData,
-    schedule,
+    status: 'failed',
+    message: 'failed to create ICS file',
+    data: null,
   };
 }

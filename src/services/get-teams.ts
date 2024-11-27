@@ -1,12 +1,8 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
+import { ServerActionResponse } from './interface';
 
-type Data = {
-  status: 'success' | 'failed';
-  message: string;
-  teams?: string[];
-};
-export async function getTeams(scheduleLink: string): Promise<Data> {
+export async function getTeams(scheduleLink: string): Promise<ServerActionResponse<string[]>> {
   try {
     const { data } = await axios.get(scheduleLink);
     const teams = new Set<string>();
@@ -15,6 +11,7 @@ export async function getTeams(scheduleLink: string): Promise<Data> {
       return {
         status: 'failed',
         message: 'invalid url',
+        data: [],
       };
     }
     const $ = cheerio.load(data);
@@ -36,19 +33,21 @@ export async function getTeams(scheduleLink: string): Promise<Data> {
       return {
         status: 'failed',
         message: 'No Teams Found',
+        data: [],
       };
     }
     teams.delete('[BYE]');
     return {
       status: 'success',
       message: 'success',
-      teams: Array.from(teams.values()),
+      data: Array.from(teams.values()),
     };
   } catch (error) {
     console.log('something went wrong');
     return {
       status: 'failed',
       message: 'Invalid URL',
+      data: [],
     };
   }
 }
