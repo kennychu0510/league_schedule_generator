@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "npx vitest run --dir ./tests/unit-test"
+    "test": "npx vitest run --dir ./tests/unit-test",
+    "e2e": "npx playwright test --ui"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.2",
