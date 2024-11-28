@@ -4,13 +4,13 @@ import { Badge } from '@/components/ui/badge';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-export default function DivisionBadge({ url, division, title }: { url: string; division: string; title: string }) {
+export default function DivisionBadge({ url, division, category }: { url: string; division: string; category: string }) {
   const router = useRouter();
   return (
     <Badge
       inputMode='none'
       onClick={() => {
-        router.push(`/division/${url}`);
+        router.push(`/division/${new URLSearchParams({ url, division, title: category })}`);
       }}
       variant='outline'
       key={url}

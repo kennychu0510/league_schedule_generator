@@ -16,13 +16,13 @@ export async function getTeams(scheduleLink: string): Promise<ServerActionRespon
     }
     const $ = cheerio.load(data);
     const tables = $('.results-schedules-container');
-    for (let table of tables) {
-      const time = $(table).find('.results-schedules-title').text().trim();
+    for (const table of tables) {
+      // const time = $(table).find('.results-schedules-title').text().trim();
       const schedule = $(table).find('.results-schedules-content');
       const matchRows = $(schedule).find('.results-schedules-list');
       // trim the first row from matchRows
-      const [header, ...rest] = matchRows;
-      for (let matchRow of rest) {
+      const [, ...rest] = matchRows;
+      for (const matchRow of rest) {
         const teamA = $(matchRow).children('.col-xs-2').first().text();
         const teamB = $(matchRow).children('.col-xs-3').first().text();
         teams.add(teamA);
@@ -42,7 +42,7 @@ export async function getTeams(scheduleLink: string): Promise<ServerActionRespon
       message: 'success',
       data: Array.from(teams.values()),
     };
-  } catch (error) {
+  } catch {
     console.log('something went wrong');
     return {
       status: 'failed',

@@ -7,10 +7,20 @@ import { ServerActionResponse } from './interface';
 type Response = {
   file: ics.EventAttributes[];
   schedule: string;
+  division: string;
+  team: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function createICalFileData(htmlFile: any, team: string, url?: string): ics.EventAttributes[] {
+function createICalFileData(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  htmlFile: any,
+  team: string,
+  url?: string
+): {
+  file: ics.EventAttributes[];
+  division: string;
+  team: string;
+} {
   const iCalFile: ics.EventAttributes[] = [];
 
   const $ = cheerio.load(htmlFile);
@@ -47,7 +57,11 @@ function createICalFileData(htmlFile: any, team: string, url?: string): ics.Even
 
     iCalFile.push(event);
   }
-  return iCalFile;
+  return {
+    file: iCalFile,
+    division: div,
+    team,
+  };
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -76,14 +90,16 @@ export default async function createSchedule(url: string, team: string): Promise
   }
   const iCalFileData = createICalFileData(data, team, url);
 
-  const iCalFile = ics.createEvents(iCalFileData);
+  const iCalFile = ics.createEvents(iCalFileData.file);
   if (iCalFile.value) {
     return {
       status: 'success',
       message: 'created ICS file successfully',
       data: {
         schedule: iCalFile.value,
-        file: iCalFileData,
+        file: iCalFileData.file,
+        division: iCalFileData.division,
+        team: iCalFileData.team,
       },
     };
   }

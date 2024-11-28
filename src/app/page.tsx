@@ -36,7 +36,7 @@ export default function Home() {
             <CardContent>
               <ul className='flex flex-wrap'>
                 {division.divisions.map((d) => (
-                  <DivisionBadge key={d.url} url={d.url} division={d.division} title={division.title} />
+                  <DivisionBadge key={d.url} url={d.url} division={d.division} category={division.title} />
                 ))}
               </ul>
             </CardContent>
