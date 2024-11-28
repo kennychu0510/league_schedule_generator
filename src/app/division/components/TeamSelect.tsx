@@ -1,8 +1,9 @@
+'use client';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import React from 'react';
 
-export default async function TeamSelect({ teams, url }: { teams: string[]; url: string }) {
+export default function TeamSelect({ teams, url }: { teams: string[]; url: string }) {
   return (
     <div>
       {teams.map((team) => (

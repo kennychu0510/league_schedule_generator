@@ -10,7 +10,7 @@ export default function DivisionBadge({ url, division, category }: { url: string
     <Badge
       inputMode='none'
       onClick={() => {
-        router.push(`/division/${new URLSearchParams({ url, division, title: category })}`);
+        router.push(`/division/?${new URLSearchParams({ url, division, category })}`);
       }}
       variant='outline'
       key={url}

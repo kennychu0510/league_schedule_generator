@@ -3,6 +3,7 @@ import masterDivisions from '../assets/divisions-master.json';
 import ladiesDivisions from '../assets/divisions-ladies.json';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import DivisionBadge from './my-components/DivisionBadge';
+import { LeagueYear } from '@/constants';
 
 const divisions = [
   {
@@ -23,7 +24,7 @@ export default function Home() {
   return (
     <div>
       <section>
-        <h1 className='mx-2 text-2xl py-2 font-bold'>Squash League Schedule Generator 2024</h1>
+        <h1 className='mx-2 text-2xl py-2 font-bold'>Squash League Schedule Generator {LeagueYear}</h1>
       </section>
       <main className='pb-2'>
         <p className='p-2 text-muted-foreground'>Generate an ICS file and import to your phone!</p>

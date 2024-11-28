@@ -6,7 +6,7 @@ import createSchedule from '@/services/create-schedule';
 import { ServerActionResponse } from '@/services/interface';
 import ics, { EventAttributes } from 'ics';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { CiCalendar, CiLocationOn } from 'react-icons/ci';
 import ScheduleSummary from './components/ScheduleSummary';
 import DownloadIcsButton from './DownloadIcsButton';
@@ -20,7 +20,7 @@ type CreateScheduleResponse = ServerActionResponse<{
   team: string;
 } | null>;
 
-export default function Page() {
+function Content() {
   const [isLoading, setIsLoading] = useState(true);
   const [result, setResult] = useState<CreateScheduleResponse | null>(null);
   const searchParams = useSearchParams();
@@ -95,5 +95,13 @@ export default function Page() {
         <ErrorPage message='Failed to generate schedule' />
       )}
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense>
+      <Content />
+    </Suspense>
   );
 }

@@ -1,9 +1,11 @@
+'use server';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { ServerActionResponse } from './interface';
 
 export async function getTeams(scheduleLink: string): Promise<ServerActionResponse<string[]>> {
   try {
+    console.log({ scheduleLink });
     const { data } = await axios.get(scheduleLink);
     const teams = new Set<string>();
 

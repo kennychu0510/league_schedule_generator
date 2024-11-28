@@ -1,6 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { EventAttributes } from 'ics';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 export default function ScheduleSummary({ schedule, team }: { schedule: EventAttributes[]; team: string }) {
   const totalMatches = schedule.filter((item) => !!item.location).length;
@@ -39,14 +39,14 @@ const SummaryItem = ({ value, label, details }: { value: string; label: string; 
       <DialogContent className='rounded-2xl'>
         <DialogHeader>
           <DialogTitle className='uppercase text-center'>{label}</DialogTitle>
-          <DialogDescription className='mx-auto flex flex-col space-y-2'>
-            {sortedDetails.map((detail) => (
-              <p key={detail} className='text-left text-xl'>
-                {detail}
-              </p>
-            ))}
-          </DialogDescription>
         </DialogHeader>
+        <div className='mx-auto flex flex-col space-y-2 text-muted-foreground'>
+          {sortedDetails.map((detail) => (
+            <p key={detail} className='text-left text-xl'>
+              {detail}
+            </p>
+          ))}
+        </div>
       </DialogContent>
     </Dialog>
   );
