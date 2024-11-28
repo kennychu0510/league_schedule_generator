@@ -8,20 +8,31 @@ import { IoIosSend } from 'react-icons/io';
 import SendEmail from '@/services/send-email';
 import { LeagueYear } from '@/constants';
 import { cn } from '@/lib/utils';
+import Spinner from '../my-components/Spinner';
 
 export default function EmailButton({ division, team, schedule }: { division: string; team: string; schedule: string }) {
   const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const [showAlert, setShowAlert] = useState<boolean | null>(null);
-  function onSendEmail() {
+  async function onSendEmail() {
     try {
-      SendEmail({
+      setIsLoading(true);
+
+      const result = await SendEmail({
         title: `Squash League Schedule for ${team} in ${division} ${LeagueYear}`,
         schedule,
         recipient: email.trim(),
       });
+      if (result.status === 'success') {
+        setShowAlert(false);
+      } else {
+        setShowAlert(true);
+      }
     } catch {
       setShowAlert(true);
+    } finally {
+      setIsLoading(false);
     }
   }
   const isValid = email.includes('@') && !email.includes(' ');
@@ -47,13 +58,17 @@ export default function EmailButton({ division, team, schedule }: { division: st
             <Input value={email} onChange={(e) => setEmail(e.target.value)} type='email' placeholder='Email' className='w-full flex rounded-full text-foreground' />
           </DialogDescription>
           <DialogFooter>
-            <div className={cn('italic text-center mt-2', showAlert === false ? 'text-green-500' : showAlert === true ? 'text-red-500' : '')}>
-              {showAlert === false ? 'Schedule Sent Successfully' : showAlert === true ? 'Failed to send email' : ''}
+            <div className='flex flex-col space-y-2 w-full'>
+              <div className={cn('italic text-center', showAlert === false ? 'text-green-500' : showAlert === true ? 'text-red-500' : '')}>
+                {showAlert === false ? 'Schedule Sent Successfully' : showAlert === true ? 'Failed to send email' : ''}
+              </div>
+              <div className='flex justify-center w-full'>
+                <Button disabled={!isValid || isLoading} onClick={onSendEmail} className='w-fit mx-auto rounded-full'>
+                  {isLoading ? <Spinner classes='size-4 border-2' /> : <IoIosSend />}
+                  Send
+                </Button>
+              </div>
             </div>
-            <Button disabled={!isValid} onClick={onSendEmail} className='w-fit mx-auto rounded-full'>
-              <IoIosSend />
-              Send
-            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

@@ -18,12 +18,13 @@ export default async function SendEmail({ schedule, recipient, title }: { schedu
   });
 
   // Send the email
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     transporter.sendMail(
       {
         from: auth.user,
         to: recipient,
         subject: title,
+        text: "For iPhone users, please open the ics file using Apple's Mail app to import schedule into iCal.",
         attachments: [
           {
             filename: 'Squash_League_Schedule_Division_Division 3_Kowloon Cricket Club 3B.ics',
@@ -38,7 +39,7 @@ export default async function SendEmail({ schedule, recipient, title }: { schedu
             message: 'Failed to send email',
           });
         } else {
-          reject({
+          resolve({
             status: 'success',
             message: 'Email sent successfully',
           });

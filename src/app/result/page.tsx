@@ -1,6 +1,6 @@
 'use client';
 import ErrorPage from '@/app/my-components/ErrorPage';
-import Spinner from '@/app/my-components/Spinner';
+import LoadingPage from '@/app/my-components/LoadingPage';
 import { Card, CardContent } from '@/components/ui/card';
 import createSchedule from '@/services/create-schedule';
 import { ServerActionResponse } from '@/services/interface';
@@ -54,7 +54,7 @@ function Content() {
         <h1 className='text-center text-2xl my-2 font-bold py-2'>{LeagueYear} Schedule</h1>
       </section>
       {isLoading ? (
-        <Spinner message='Generating Schedule' />
+        <LoadingPage message='Generating Schedule' />
       ) : result != null ? (
         <main className='mx-2 pb-2'>
           <h1 className='text-xl font-bold mb-2'>{`Schedule for ${team}`}</h1>

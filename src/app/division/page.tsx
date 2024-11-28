@@ -2,9 +2,9 @@
 import { useSearchParams } from 'next/navigation';
 import { useState, useEffect, Suspense } from 'react';
 import TeamSelect from './components/TeamSelect';
-import Spinner from '@/app/my-components/Spinner';
 import ErrorPage from '../my-components/ErrorPage';
 import { getTeams } from '@/services/get-teams';
+import LoadingPage from '../my-components/LoadingPage';
 
 function Content() {
   const [isLoading, setIsLoading] = useState(true);
@@ -40,7 +40,7 @@ function Content() {
         </h2>
       </section>
       {isLoading || teams === null ? (
-        <Spinner message='Retrieving Teams' />
+        <LoadingPage message='Retrieving Teams' />
       ) : teams.length > 0 ? (
         <main className='mx-2 py-2'>
           <TeamSelect url={fullUrl ?? ''} teams={teams} />
