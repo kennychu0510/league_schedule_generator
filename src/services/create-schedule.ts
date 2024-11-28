@@ -11,7 +11,7 @@ type Response = {
   team: string;
 };
 
-function createICalFileData(
+export function createICalFileData(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   htmlFile: any,
   team: string,
