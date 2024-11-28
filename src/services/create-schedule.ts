@@ -9,19 +9,20 @@ type Response = {
   schedule: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function createICalFileData(htmlFile: any, team: string, url?: string): ics.EventAttributes[] {
   const iCalFile: ics.EventAttributes[] = [];
 
-  let $ = cheerio.load(htmlFile);
+  const $ = cheerio.load(htmlFile);
   const tables = $('.results-schedules-container');
   const divContainer = $('.teams-section-container').children().first();
   const div = $(divContainer).find('a').text().trim();
-  for (let table of tables) {
+  for (const table of tables) {
     const time = $(table).find('.results-schedules-title').text().trim();
     const schedule = $(table).find('.results-schedules-content');
     const matchRows = $(schedule).find('.results-schedules-list');
     const { teamA, teamB, venue } = getBothTeams(matchRows, team);
-    const week = time.slice(0, time.indexOf('-') - 1);
+    // const week = time.slice(0, time.indexOf('-') - 1);
     const date = time
       .slice(time.indexOf('-') + 2)
       .split('/')
@@ -49,9 +50,10 @@ function createICalFileData(htmlFile: any, team: string, url?: string): ics.Even
   return iCalFile;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getBothTeams(matchRows: any, selectedTeam: string): { teamA: string; teamB: string; venue: string } {
-  const [header, ...rest] = matchRows;
-  for (let matchRow of rest) {
+  const [, ...rest] = matchRows;
+  for (const matchRow of rest) {
     const $ = cheerio.load(matchRow);
     const teamA = $(matchRow).children('.col-xs-2').first().text();
     const teamB = $(matchRow).children('.col-xs-3').first().text();
