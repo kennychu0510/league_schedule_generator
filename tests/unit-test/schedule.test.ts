@@ -3,50 +3,50 @@ import fs from 'fs';
 import { EventAttributes } from 'ics';
 import { expect, test } from 'vitest';
 
-test('create iCal File works properly', () => {
+test('create iCal File works properly', async () => {
   const data = fs.readFileSync('./tests/unit-test/sample1.html', {
     encoding: 'utf-8',
   });
-  const schedule = createICalFileData(data, 'KCC 1').file;
+  const schedule = (await createICalFileData(data, 'KCC 1')).file;
   expect(schedule.length).toBe(14);
   expect(schedule[0].title).toMatch(/i-mask advance squash club 1/i);
   expect(schedule[13].title).toMatch(/PHYSICAL CHESS 1/i);
   expect(schedule[13].location).toMatch(/HK SQUASH CENTRE/i);
 });
 
-test('create iCal File works properly 2', () => {
+test('create iCal File works properly 2', async () => {
   const data = fs.readFileSync('./tests/unit-test/sample2.html', {
     encoding: 'utf-8',
   });
-  const schedule = createICalFileData(data, 'Bruh').file;
+  const schedule = (await createICalFileData(data, 'Bruh')).file;
   expect(schedule.length).toBe(11);
   expect(schedule[0].title).toMatch(/FRIEND CLUB 1/i);
   expect(schedule[10].title).toMatch(/I-MASK ADVANCE SQUASH CLUB 2/i);
 });
 
-test('Test Home and Away is correctly handled', () => {
+test('Test Home and Away is correctly handled', async () => {
   const data = fs.readFileSync('./tests/unit-test/sample2.html', {
     encoding: 'utf-8',
   });
-  const schedule = createICalFileData(data, 'TNGX').file;
+  const schedule = (await createICalFileData(data, 'TNGX')).file;
   expect(schedule[3].title).toContain('(AWAY)');
   expect(schedule[4].title).toContain('(HOME)');
 });
 
-test('Bye correctly handled', () => {
+test('Bye correctly handled', async () => {
   const data = fs.readFileSync('./tests/unit-test/sample1.html', {
     encoding: 'utf-8',
   });
-  const schedule = createICalFileData(data, 'KCC 1').file;
+  const schedule = (await createICalFileData(data, 'KCC 1')).file;
   expect(schedule[1].title).toContain('BYE');
 });
 
-test.only('Ladies D2 2024-2025 is correct', () => {
+test('Ladies D2 2024-2025 is correct', async () => {
   const data = fs.readFileSync('./tests/unit-test/sample3.html', {
     encoding: 'utf-8',
   });
   const division = 'L2';
-  const schedule = createICalFileData(data, 'Jessica L2').file;
+  const schedule = (await createICalFileData(data, 'Jessica L2')).file;
   verifyEvent({
     awayTeam: 'Kowloon Cricket Club L2',
     division,
@@ -121,12 +121,12 @@ test.only('Ladies D2 2024-2025 is correct', () => {
   });
 });
 
-test.only('Main D3 2024-2025 is correct', () => {
+test('Main D3 2024-2025 is correct', async () => {
   const data = fs.readFileSync('./tests/unit-test/sample4.html', {
     encoding: 'utf-8',
   });
   const division = '3';
-  const schedule = createICalFileData(data, 'Kowloon Cricket Club 3B').file;
+  const schedule = (await createICalFileData(data, 'Kowloon Cricket Club 3B')).file;
   verifyEvent({
     awayTeam: 'Young Player 3',
     division,

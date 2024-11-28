@@ -14,7 +14,7 @@ export default function RootLayout({
   return (
     <html lang='en' className='bg-background text-foreground'>
       <body className='flex justify-center'>
-        <div className='max-w-xl h-dvh'>{children}</div>
+        <div className='max-w-xl min-w-[350px] h-dvh'>{children}</div>
       </body>
     </html>
   );

@@ -7,11 +7,13 @@ import { ServerActionResponse } from '@/services/interface';
 import ics, { EventAttributes } from 'ics';
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
-import { CiCalendar, CiLocationOn } from 'react-icons/ci';
+import { CiCalendar, CiLink, CiLocationOn } from 'react-icons/ci';
 import ScheduleSummary from './components/ScheduleSummary';
 import DownloadIcsButton from './DownloadIcsButton';
 import EmailButton from './EmailButton';
 import { LeagueYear } from '@/constants';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 type CreateScheduleResponse = ServerActionResponse<{
   file: ics.EventAttributes[];
@@ -59,6 +61,12 @@ function Content() {
           <div className='flex flex-col space-y-2'>
             <ScheduleSummary schedule={result.data!.file} team={team!} />
             <div className='flex justify-between'>
+              <Link href={url!} target='_blank'>
+                <Button className='rounded-full'>
+                  <CiLink />
+                  Source
+                </Button>
+              </Link>
               <DownloadIcsButton schedule={result.data!.schedule} division={result.data!.division} team={team!} />
               <EmailButton schedule={result.data!.schedule} division={result.data!.division} team={team!} />
             </div>

@@ -5,42 +5,41 @@ import ical from 'node-ical';
 test('has all divisions', async ({ page }) => {
   await page.goto('http://localhost:3000');
 
-  expect(page.getByTestId('Main-Premier Main-chip')).toBeVisible();
-  expect(page.getByTestId('Main-2-chip')).toBeVisible();
-  expect(page.getByTestId('Main-3-chip')).toBeVisible();
-  expect(page.getByTestId('Main-4-chip')).toBeVisible();
-  expect(page.getByTestId('Main-5-chip')).toBeVisible();
-  expect(page.getByTestId('Main-6-chip')).toBeVisible();
-  expect(page.getByTestId('Main-7A-chip')).toBeVisible();
-  expect(page.getByTestId('Main-7B-chip')).toBeVisible();
-  expect(page.getByTestId('Main-8B-chip')).toBeVisible();
-  expect(page.getByTestId('Main-8A-chip')).toBeVisible();
-  expect(page.getByTestId('Main-9-chip')).toBeVisible();
-  expect(page.getByTestId('Main-10-chip')).toBeVisible();
-  expect(page.getByTestId('Main-11-chip')).toBeVisible();
-  expect(page.getByTestId('Main-12-chip')).toBeVisible();
-  expect(page.getByTestId('Main-13B-chip')).toBeVisible();
-  expect(page.getByTestId('Main-13A-chip')).toBeVisible();
-  expect(page.getByTestId('Main-14-chip')).toBeVisible();
-  expect(page.getByTestId('Main-15A-chip')).toBeVisible();
-  expect(page.getByTestId('Main-15B-chip')).toBeVisible();
+  expect(page.getByLabel('Main-Premier Main')).toBeVisible();
+  expect(page.getByLabel('Main-2')).toBeVisible();
+  expect(page.getByLabel('Main-3')).toBeVisible();
+  expect(page.getByLabel('Main-4')).toBeVisible();
+  expect(page.getByLabel('Main-5')).toBeVisible();
+  expect(page.getByLabel('Main-6')).toBeVisible();
+  expect(page.getByLabel('Main-7A')).toBeVisible();
+  expect(page.getByLabel('Main-7B')).toBeVisible();
+  expect(page.getByLabel('Main-8B')).toBeVisible();
+  expect(page.getByLabel('Main-8A')).toBeVisible();
+  expect(page.getByLabel('Main-9')).toBeVisible();
+  expect(page.getByLabel('Main-10')).toBeVisible();
+  expect(page.getByLabel('Main-11')).toBeVisible();
+  expect(page.getByLabel('Main-12')).toBeVisible();
+  expect(page.getByLabel('Main-13B')).toBeVisible();
+  expect(page.getByLabel('Main-13A')).toBeVisible();
+  expect(page.getByLabel('Main-14')).toBeVisible();
+  expect(page.getByLabel('Main-15A')).toBeVisible();
+  expect(page.getByLabel('Main-15B')).toBeVisible();
 
-  expect(page.getByTestId('Master-Premier Masters-chip')).toBeVisible();
-  expect(page.getByTestId('Master-2-chip')).toBeVisible();
-  expect(page.getByTestId('Master-3-chip')).toBeVisible();
-  expect(page.getByTestId('Master-4-chip')).toBeVisible();
+  expect(page.getByLabel('Master-Premier Masters')).toBeVisible();
+  expect(page.getByLabel('Master-2')).toBeVisible();
+  expect(page.getByLabel('Master-3')).toBeVisible();
+  expect(page.getByLabel('Master-4')).toBeVisible();
 
-  expect(page.getByTestId('Ladies-Premier Ladies-chip')).toBeVisible();
-  expect(page.getByTestId('Ladies-2-chip')).toBeVisible();
-  expect(page.getByTestId('Ladies-3-chip')).toBeVisible();
-  expect(page.getByTestId('Ladies-4-chip')).toBeVisible();
+  expect(page.getByLabel('Ladies-Premier Ladies')).toBeVisible();
+  expect(page.getByLabel('Ladies-2')).toBeVisible();
+  expect(page.getByLabel('Ladies-3')).toBeVisible();
+  expect(page.getByLabel('Ladies-4')).toBeVisible();
 
-  await page.getByTestId('Main-3-chip').click();
-  await page.getByRole('button').click();
-  await page.getByRole('combobox').click();
-  await page.getByRole('option', { name: 'Happy Squash' }).click();
-  await page.getByRole('button', { name: 'Generate' }).click();
-  expect(page.getByTestId('generated-schedule')).toBeVisible();
+  await page.getByLabel('Main-3').click();
+  await page.waitForURL('http://localhost:3000/division?*');
+  await page.getByLabel('Kowloon Cricket Club 3B').click();
+  await page.waitForURL('http://localhost:3000/result?*');
+  expect(page.getByLabel('Download')).toBeVisible();
 
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Download' }).click();
@@ -54,11 +53,11 @@ test('has all divisions', async ({ page }) => {
   const ics = buffer.toString('utf8');
   const events = Object.values(ical.sync.parseICS(ics)) as any;
 
-  expect(events[0].summary).toBe('Squash League - Division 3 - vs NEXUS 1 (HOME)');
-  expect(events[0].location).toBe('Cornwall Street Squash Centre');
+  expect(events[0].summary).toBe('Squash League - Division 3 - vs Kowloon Cricket Club 3A (AWAY)');
+  expect(events[0].location).toBe('Kowloon Cricket Club');
   expect(events[0].start.toString()).toBe('Tue Oct 08 2024 19:00:00 GMT+0800 (Hong Kong Standard Time)');
 
-  expect(events[17].summary).toBe('Squash League - Division 3 - vs Hong Kong Football Club 3B (HOME)');
-  expect(events[17].location).toBe('Cornwall Street Squash Centre');
-  expect(events[17].start.toString()).toBe('Tue Mar 11 2025 19:00:00 GMT+0800 (Hong Kong Standard Time)');
+  expect(events[17].summary).toBe('Squash League - Division 3 - vs Hong Kong Football Club 3A (AWAY)');
+  expect(events[17].location).toBe('Hong Kong Football Club');
+  expect(events[17].start.toString()).toBe('Tue Mar 18 2025 19:00:00 GMT+0800 (Hong Kong Standard Time)');
 });

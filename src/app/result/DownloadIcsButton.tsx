@@ -22,7 +22,7 @@ export default function DownloadIcsButton({ division, team, schedule }: { divisi
   }
   return (
     <div className='space-y-2'>
-      <Button className='rounded-full' onClick={onClick}>
+      <Button className='rounded-full' onClick={onClick} aria-label='Download'>
         <IoMdDownload />
         Download
       </Button>

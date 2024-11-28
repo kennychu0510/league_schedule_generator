@@ -6,4 +6,7 @@ export default defineConfig({
   resolve: {
     alias: [{ find: '@', replacement: resolve(__dirname, './src') }],
   },
+  test: {
+    include: ['./tests/unit-test/**/*.test.ts'],
+  },
 });

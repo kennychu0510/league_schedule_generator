@@ -11,16 +11,16 @@ type Response = {
   team: string;
 };
 
-export function createICalFileData(
+export async function createICalFileData(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   htmlFile: any,
   team: string,
   url?: string
-): {
+): Promise<{
   file: ics.EventAttributes[];
   division: string;
   team: string;
-} {
+}> {
   const iCalFile: ics.EventAttributes[] = [];
 
   const $ = cheerio.load(htmlFile);
@@ -88,7 +88,7 @@ export default async function createSchedule(url: string, team: string): Promise
       data: null,
     };
   }
-  const iCalFileData = createICalFileData(data, team, url);
+  const iCalFileData = await createICalFileData(data, team, url);
 
   const iCalFile = ics.createEvents(iCalFileData.file);
   if (iCalFile.value) {

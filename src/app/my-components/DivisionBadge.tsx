@@ -15,6 +15,7 @@ export default function DivisionBadge({ url, division, category }: { url: string
       variant='outline'
       key={url}
       className='mr-2 mb-2 h-10 rounded-full min-w-10 flex justify-center cursor-pointer'
+      aria-label={`${category}-${division}`}
     >
       {division}
     </Badge>
