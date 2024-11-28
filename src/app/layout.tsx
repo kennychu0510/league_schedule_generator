@@ -13,8 +13,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' className='bg-background text-foreground'>
-      <body className='max-w-[600px]'>
-        <div className='w-dvw h-dvh'>{children}</div>
+      <body className='flex justify-center'>
+        <div className='max-w-xl h-dvh'>{children}</div>
       </body>
     </html>
   );

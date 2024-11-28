@@ -52,7 +52,7 @@ function Content() {
         <h1 className='text-center text-2xl my-2 font-bold py-2'>{LeagueYear} Schedule</h1>
       </section>
       {isLoading ? (
-        <Spinner />
+        <Spinner message='Generating Schedule' />
       ) : result != null ? (
         <main className='mx-2 pb-2'>
           <h1 className='text-xl font-bold mb-2'>{`Schedule for ${team}`}</h1>
