@@ -13,7 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' className='bg-background text-foreground'>
-      <body>
+      <body className='max-w-[600px]'>
         <div className='w-dvw h-dvh'>{children}</div>
       </body>
     </html>
