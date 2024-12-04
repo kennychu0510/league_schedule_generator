@@ -14,6 +14,7 @@ import EmailButton from './EmailButton';
 import { LeagueYear } from '@/constants';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import AddToCalendarButton from './AddToCalButton';
 
 type CreateScheduleResponse = ServerActionResponse<{
   file: ics.EventAttributes[];
@@ -61,14 +62,16 @@ function Content() {
           <div className='flex flex-col space-y-2'>
             <ScheduleSummary schedule={result.data!.file} team={team!} />
             <div className='flex justify-between'>
-              <Link href={url!} target='_blank'>
-                <Button className='rounded-full'>
-                  <CiLink />
-                  Source
-                </Button>
-              </Link>
-              <DownloadIcsButton schedule={result.data!.schedule} division={result.data!.division} team={team!} />
-              <EmailButton schedule={result.data!.schedule} division={result.data!.division} team={team!} />
+              <AddToCalendarButton schedule={result.data!.schedule} division={result.data!.division} team={team!} />
+              <div className='flex space-x-2'>
+                <Link href={url!} target='_blank'>
+                  <Button className='rounded-full'>
+                    <CiLink />
+                  </Button>
+                </Link>
+                <DownloadIcsButton schedule={result.data!.schedule} division={result.data!.division} team={team!} />
+                <EmailButton schedule={result.data!.schedule} division={result.data!.division} team={team!} />
+              </div>
             </div>
             {result.data?.file.map((item: EventAttributes, index: number) => {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any

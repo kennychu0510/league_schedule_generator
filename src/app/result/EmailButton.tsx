@@ -41,37 +41,34 @@ export default function EmailButton({ division, team, schedule }: { division: st
     setShowAlert(null);
   }, [email]);
   return (
-    <div className='space-y-2'>
-      <Dialog modal>
-        <DialogTrigger>
-          <div className='rounded-full bg-white py-2 px-4 flex text-black items-center text-sm'>
-            <MdEmail className='mr-2' />
-            Email
-          </div>
-        </DialogTrigger>
-        <DialogContent className='rounded-2xl'>
-          <DialogHeader>
-            <DialogTitle className='uppercase text-center mb-2'>Enter Your Email</DialogTitle>
-          </DialogHeader>
+    <Dialog modal>
+      <DialogTrigger>
+        <div className='rounded-full bg-white px-4 py-2 flex text-black items-center'>
+          <MdEmail className='' />
+        </div>
+      </DialogTrigger>
+      <DialogContent className='rounded-2xl'>
+        <DialogHeader>
+          <DialogTitle className='uppercase text-center mb-2'>Enter Your Email</DialogTitle>
+        </DialogHeader>
 
-          <DialogDescription className='mx-auto flex flex-col space-y-4 w-full'>
-            <Input value={email} onChange={(e) => setEmail(e.target.value)} type='email' placeholder='Email' className='w-full flex rounded-full text-foreground' />
-          </DialogDescription>
-          <DialogFooter>
-            <div className='flex flex-col space-y-2 w-full'>
-              <div className={cn('italic text-center', showAlert === false ? 'text-green-500' : showAlert === true ? 'text-red-500' : '')}>
-                {showAlert === false ? 'Schedule Sent Successfully' : showAlert === true ? 'Failed to send email' : ''}
-              </div>
-              <div className='flex justify-center w-full'>
-                <Button disabled={!isValid || isLoading} onClick={onSendEmail} className='w-fit mx-auto rounded-full'>
-                  {isLoading ? <Spinner classes='size-4 border-2' /> : <IoIosSend />}
-                  Send
-                </Button>
-              </div>
+        <DialogDescription className='mx-auto flex flex-col space-y-4 w-full'>
+          <Input value={email} onChange={(e) => setEmail(e.target.value)} type='email' placeholder='Email' className='w-full flex rounded-full text-foreground' />
+        </DialogDescription>
+        <DialogFooter>
+          <div className='flex flex-col space-y-2 w-full'>
+            <div className={cn('italic text-center', showAlert === false ? 'text-green-500' : showAlert === true ? 'text-red-500' : '')}>
+              {showAlert === false ? 'Schedule Sent Successfully' : showAlert === true ? 'Failed to send email' : ''}
             </div>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </div>
+            <div className='flex justify-center w-full'>
+              <Button disabled={!isValid || isLoading} onClick={onSendEmail} className='w-fit mx-auto rounded-full'>
+                {isLoading ? <Spinner classes='size-4 border-2' /> : <IoIosSend />}
+                Send
+              </Button>
+            </div>
+          </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

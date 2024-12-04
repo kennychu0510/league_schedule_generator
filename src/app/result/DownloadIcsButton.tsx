@@ -1,6 +1,5 @@
 'use client';
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import React, { useEffect, useState } from 'react';
 import { IoMdDownload } from 'react-icons/io';
 
 export default function DownloadIcsButton({ division, team, schedule }: { division: string; team: string; schedule: string }) {
@@ -20,13 +19,16 @@ export default function DownloadIcsButton({ division, team, schedule }: { divisi
       setShowAlert(true);
     }
   }
+
+  useEffect(() => {
+    if (showAlert) {
+      alert('An error occurred while downloading the file. Please try again later.');
+      setShowAlert(false);
+    }
+  }, [showAlert]);
   return (
-    <div className='space-y-2'>
-      <Button className='rounded-full' onClick={onClick} aria-label='Download'>
-        <IoMdDownload />
-        Download
-      </Button>
-      {showAlert && <p className='text-red-500'>Failed to download file</p>}
+    <div className='rounded-full bg-white px-4 py-2 flex text-black items-center' onClick={onClick} aria-label='Download'>
+      <IoMdDownload />
     </div>
   );
 }
