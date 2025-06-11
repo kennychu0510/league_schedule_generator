@@ -5,7 +5,7 @@ const axios = require('axios');
 
 const leagueType = ['Main', 'Master', 'Ladies'];
 
-const url = 'https://www.hksquash.org.hk/public/leagues/index/league/Summer/pages_id/26.html';
+const url = 'https://www.hksquash.org.hk/public/leagues/index/league/Summer/pages_id/26.html'; // Update this
 
 async function main() {
   const response = await axios.get(url);
@@ -13,8 +13,9 @@ async function main() {
 
   function generateDivisionsJson(leagueType) {
     const divisionData = [];
+    const number = 22; // Update this
 
-    const leagueList = $(`#league${leagueType}22 > div > div.league-list.clearfix`);
+    const leagueList = $(`#league${leagueType}${number} > div > div.league-list.clearfix`);
     const divisions = leagueList.find('a');
     for (let division of divisions) {
       const url = division.attribs.href;
