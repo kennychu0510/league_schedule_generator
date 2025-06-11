@@ -21,6 +21,7 @@ const divisions = [
 ];
 
 export default function Home() {
+  const divisionsWithItems = divisions.filter((division) => division.divisions.length > 0);
   return (
     <div>
       <section>
@@ -28,7 +29,7 @@ export default function Home() {
       </section>
       <main className='pb-2'>
         <p className='p-2 text-muted-foreground'>Generate an ICS file and import to your phone!</p>
-        {divisions.map((division) => (
+        {divisionsWithItems.map((division) => (
           <Card className='mx-2 mb-2' key={division.title}>
             <CardHeader>
               <CardTitle>{division.title}</CardTitle>

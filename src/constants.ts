@@ -1,1 +1,1 @@
-export const LeagueYear = '2024 - 2025';
+export const LeagueYear = '2025 - 2026';
