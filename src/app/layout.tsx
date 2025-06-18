@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata: Metadata = {
   title: 'Generate Squash League Schedule',
@@ -16,6 +17,7 @@ export default function RootLayout({
       <body className='flex justify-center'>
         <div className='max-w-xl min-w-[350px] h-dvh'>{children}</div>
       </body>
+      <Analytics />
     </html>
   );
 }

@@ -10,7 +10,7 @@ export default async function Home() {
       </section>
       <main className='pb-2'>
         <p className='p-2 text-muted-foreground'>Generate an ICS file and import to your phone!</p>
-        <Suspense fallback={<LoadingPage message='Retireving League Schedule' />}>
+        <Suspense fallback={<LoadingPage message='Retrieving League Schedule' />}>
           <LeagueList />
         </Suspense>
       </main>
