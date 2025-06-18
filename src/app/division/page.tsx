@@ -5,6 +5,7 @@ import TeamSelect from './components/TeamSelect';
 import ErrorPage from '../my-components/ErrorPage';
 import { getTeams } from '@/services/get-teams';
 import LoadingPage from '../my-components/LoadingPage';
+import BottomNavigation from '../components/BottomNavigation';
 
 function Content() {
   const [isLoading, setIsLoading] = useState(true);
@@ -44,6 +45,7 @@ function Content() {
       ) : teams.length > 0 ? (
         <main className='mx-2 py-2'>
           <TeamSelect url={fullUrl ?? ''} teams={teams} />
+          <BottomNavigation />
         </main>
       ) : (
         <ErrorPage message='No teams found' />

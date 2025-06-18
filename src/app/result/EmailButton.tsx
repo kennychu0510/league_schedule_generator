@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input';
 import { MdEmail } from 'react-icons/md';
 import { IoIosSend } from 'react-icons/io';
 import SendEmail from '@/services/send-email';
-import { LeagueYear } from '@/constants';
 import { cn } from '@/lib/utils';
 import Spinner from '../my-components/Spinner';
 
@@ -20,7 +19,7 @@ export default function EmailButton({ division, team, schedule }: { division: st
       setIsLoading(true);
 
       const result = await SendEmail({
-        title: `Squash League Schedule for ${team} in ${division} ${LeagueYear}`,
+        title: `Squash League Schedule for ${team} in ${division}`,
         schedule,
         recipient: email.trim(),
       });

@@ -14,9 +14,11 @@ export async function getDivisionAssets(type: 'summer' | 'winter') {
   const squashLeagueLink = squashLeagueItem.find('a').attr('href');
   const summerLeagueLink = summerLeagueItem.find('a').attr('href');
   if (type === 'summer') {
-    return await getScheduleUrlsMapping(summerLeagueLink);
+    const divisions = await getScheduleUrlsMapping(summerLeagueLink);
+    return { divisions, link: summerLeagueLink };
   }
-  return await getScheduleUrlsMapping(squashLeagueLink);
+  const divisions = await getScheduleUrlsMapping(squashLeagueLink);
+  return { divisions, link: squashLeagueLink };
 }
 
 async function getScheduleUrlsMapping(leagueListUrl: string | undefined) {

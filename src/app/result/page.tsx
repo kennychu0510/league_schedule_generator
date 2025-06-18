@@ -11,10 +11,10 @@ import { CiCalendar, CiLink, CiLocationOn } from 'react-icons/ci';
 import ScheduleSummary from './components/ScheduleSummary';
 import DownloadIcsButton from './DownloadIcsButton';
 import EmailButton from './EmailButton';
-import { LeagueYear } from '@/constants';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import AddToCalendarButton from './AddToCalButton';
+import BottomNavigation from '../components/BottomNavigation';
 
 type CreateScheduleResponse = ServerActionResponse<{
   file: ics.EventAttributes[];
@@ -52,7 +52,7 @@ function Content() {
   return (
     <div>
       <section>
-        <h1 className='text-center text-2xl my-2 font-bold py-2'>{LeagueYear} Schedule</h1>
+        <h1 className='text-center text-2xl my-2 font-bold py-2'>Schedule</h1>
       </section>
       {isLoading ? (
         <LoadingPage message='Generating Schedule' />
@@ -101,6 +101,7 @@ function Content() {
               );
             })}
           </div>
+          <BottomNavigation returnToHome />
         </main>
       ) : (
         <ErrorPage message='Failed to generate schedule' />
