@@ -21,14 +21,14 @@ export default async function LeagueList() {
   const { divisions, link } = await getDivisionAssets(divisionType);
   const invalidResult = divisions.length === 0;
   return (
-    <div className='mx-2'>
+    <div className='flex flex-col mx-2'>
       {invalidResult ? (
         <div className='text-red-400 my-4'>There are no divisions available for the {divisionType} league at the moment.</div>
       ) : (
         <>
           <div className='capitalize mb-2 font-bold'>{divisionType} League</div>
           {divisions.map((division) => (
-            <Card className='mx-2 mb-2' key={division.id}>
+            <Card className=' mb-2' key={division.id}>
               <CardHeader>
                 <CardTitle>{division.id}</CardTitle>
                 <CardDescription>{division.divisionsUrlList.length} Divisions</CardDescription>
@@ -46,8 +46,8 @@ export default async function LeagueList() {
       )}
       {/* source */}
       <div className='text-xs text-muted-foreground mt-2'>
-        <a href={`${RootUrl + link}`} target='_blank' rel='noopener noreferrer'>
-          {`${RootUrl + link}`}
+        <a href={`${RootUrl + link}`} target='_blank' rel='noopener noreferrer' className='underline'>
+          Source
         </a>
       </div>
     </div>
